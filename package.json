@@ -1,0 +1,12 @@
+{
+  "name": "RealtimeServer",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "expo-server-sdk": "^4.0.0",
+    "express": "^5.1.0",
+    "socket.io": "^4.8.1"
+  },
+  "scripts": {
+    "start": "node index.js"
+  }
+}
