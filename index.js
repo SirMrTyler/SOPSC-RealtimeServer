@@ -3,6 +3,13 @@ const cors = require('cors');
 const http = require('http');
 const { Server } = require('socket.io');
 const { Expo } = require('expo-server-sdk');
+const dotenv = require('dotenv');
+
+const envFile = process.env.NODE_ENV === 'production'
+  ? '.env'
+  : '.env.development';
+
+dotenv.config({ path: envFile });
 
 const app = express();
 app.use(cors());
@@ -136,6 +143,8 @@ io.on('connection', socket => {
 });
 
 const PORT = process.env.PORT || 3001;
+const SOCKET_URL = process.env.EXPO_PUBLIC_SOCKET_URL || 'http://localhost:3001';
 server.listen(PORT, () => {
+  console.log(`✅ Socket server running on address ${SOCKET_URL}`)
   console.log(`✅ Socket server running on port ${PORT}`);
 });

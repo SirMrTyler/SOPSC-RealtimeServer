@@ -1,12 +1,18 @@
 {
   "name": "RealtimeServer",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "cross-env NODE_ENV=development node index.js"
+  },
   "dependencies": {
     "cors": "^2.8.5",
+    "dotenv": "^17.2.1",
     "expo-server-sdk": "^4.0.0",
     "express": "^5.1.0",
     "socket.io": "^4.8.1"
   },
-  "scripts": {
-    "start": "node index.js"
+  "devDependencies": {
+    "cross-env": "^10.0.0"
   }
 }
