@@ -23,12 +23,18 @@ let protocol;
 if (process.env.SSL_KEY_PATH && process.env.SSL_CERT_PATH) {
   const key = fs.readFileSync(process.env.SSL_KEY_PATH);
   const cert = fs.readFileSync(process.env.SSL_CERT_PATH);
-const server = https.createServer({key, cert}, app);
-protocol = 'https';
+  const server = https.createServer({key, cert}, app);
+  protocol = 'https';
 } else {
   server = http.createServer(app);
   protocol = 'http';
 }
+
+const io = new Server(server, {
+  cors: {
+    origin: '*',
+  },
+});
 
 const expo = new Expo();
 
