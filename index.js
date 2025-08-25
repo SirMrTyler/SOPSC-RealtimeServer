@@ -1,6 +1,8 @@
 const express = require('express');
 const cors = require('cors');
 const http = require('http');
+const https = require('https');
+const fs = require('fs');
 const { Server } = require('socket.io');
 const { Expo } = require('expo-server-sdk');
 const dotenv = require('dotenv');
@@ -14,12 +16,19 @@ dotenv.config({ path: envFile });
 const app = express();
 app.use(cors());
 
-const server = http.createServer(app);
-const io = new Server(server, {
-  cors: {
-    origin: '*',
-  },
-});
+const PORT = process.env.PORT || 3001;
+let server;
+let protocol;
+
+if (process.env.SSL_KEY_PATH && process.env.SSL_CERT_PATH) {
+  const key = fs.readFileSync(process.env.SSL_KEY_PATH);
+  const cert = fs.readFileSync(process.env.SSL_CERT_PATH);
+const server = https.createServer({key, cert}, app);
+protocol = 'https';
+} else {
+  server = http.createServer(app);
+  protocol = 'http';
+}
 
 const expo = new Expo();
 
@@ -142,9 +151,10 @@ io.on('connection', socket => {
   });
 });
 
-const PORT = process.env.PORT || 3001;
-const SOCKET_URL = process.env.EXPO_PUBLIC_SOCKET_URL || 'http://localhost:3001';
+const SOCKET_URL = 
+  process.env.EXPO_PUBLIC_SOCKET_URL || `${protocol}://localhost:${PORT}`;
+
 server.listen(PORT, () => {
-  console.log(`✅ Socket server running on address ${SOCKET_URL}`)
+  console.log(`✅ Socket server running on address ${SOCKET_URL}`);
   console.log(`✅ Socket server running on port ${PORT}`);
 });
