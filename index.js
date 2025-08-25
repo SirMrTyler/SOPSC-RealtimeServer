@@ -36,7 +36,7 @@ const expo = new Expo();
 const activeSockets = {};
 
 async function getPushTokens(userId) {
-  const baseUrl = process.env.API_BASE_URL || 'http://localhost:5000';
+  const baseUrl = process.env.EXPO_PUBLIC_SOCKET_URL || 'http://localhost:5000';
   try {
     const res = await fetch(`${baseUrl}/api/notifications/token/${userId}`);
     if (!res.ok) {
